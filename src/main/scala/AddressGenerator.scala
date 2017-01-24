@@ -220,7 +220,7 @@ object AddressGenerator extends App {
     words.dropRight(1)
   }
 
-  private def hashChain(noncedSecret: String): scala.Array[scala.Byte] = Keccak256.hash(Blake2b256.hash(noncedSecret))
+  private def hashChain(noncedSecret: Array[Byte]): Array[Byte] = Keccak256.hash(Blake2b256.hash(noncedSecret))
 
   var count:Int = 1
   var chainId:Char = 'W'
@@ -230,10 +230,10 @@ object AddressGenerator extends App {
     if(config.testnet) chainId = 'T'
     for (i <- 1 to count) {
       val seed = generatePhrase
-      val accountSeedHash = hashChain(seed)
+      val accountSeedHash = hashChain(Array[Byte](0,0,0,0) ++ seed.getBytes)
       val (privateKey, publicKey) = Curve25519.createKeyPair(accountSeedHash)
-      val unhashedAddress = 1.toByte +: chainId.toByte +: hashChain(publicKey.toString).take(20)
-      val address = Base58.encode(unhashedAddress ++ hashChain(unhashedAddress.toString).take(4))
+      val unhashedAddress = 1.toByte +: chainId.toByte +: hashChain(publicKey).take(20)
+      val address = Base58.encode(unhashedAddress ++ hashChain(unhashedAddress).take(4))
       println("address #    : " + i)
       println("seed         : " + seed)
       println("public key   : " + Base58.encode(publicKey))
