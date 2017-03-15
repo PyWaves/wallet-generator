@@ -1,2 +1,2 @@
-# scala_addressgenerator
-Waves address generator in Scala
+# scala_walletgenerator
+Waves wallet generator in Scala
