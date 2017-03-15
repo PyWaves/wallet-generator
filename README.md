@@ -17,10 +17,10 @@ Usage: walletgenerator [options]
 	
 ## Examples
 
-```$ java -jar walletgenerator.jar --testnet -c 100 -p mypassword ```
+```$ java -jar walletgenerator.jar --testnet -c 100 -p mypassword
+```
+generate 100 testnet addresses. Output to screen, wallet.dat (encrypted with 'mypassword') and addresses.csv
 
-genearate 100 testnet addresses. Output to screen, wallet.dat (encrypted with 'mypassword') and addresses.csv
-
-```$ java -jar walletgenerator.jar -c 1000 -p mypassword -f WAVE ```
-
-genearate 1000 mainnet addresses. Filter only addresses containing the word 'WAVE', output to screen, wallet.dat (encrypted with 'mypassword') and addresses.csv
+```$ java -jar walletgenerator.jar -c 1000 -p mypassword -f WAVE
+```
+generate 1000 mainnet addresses. Filter only addresses containing the word 'WAVE', output to screen, wallet.dat (encrypted with 'mypassword') and addresses.csv
