@@ -241,6 +241,7 @@ object WalletGenerator extends App {
 
   parser.parse(args, Config()) map { config =>
 
+    val addrVersion:Byte = 1
     val chainId:Byte = if(config.testnet) 'T' else 'W'
     val db: MVStore = createWallet("./wallet.dat", config.password)
     val accountsPersistence: MVMap[Int, Array[Byte]] = db.openMap("privkeys")
@@ -253,7 +254,7 @@ object WalletGenerator extends App {
       val seed = generatePhrase
       val accountSeedHash = hashChain(Array[Byte](0, 0, 0, 0) ++ seed.getBytes)
       val (privateKey, publicKey) = Curve25519.createKeyPair(accountSeedHash)
-      val unhashedAddress = 1.toByte +: chainId.toByte +: hashChain(publicKey).take(20)
+      val unhashedAddress = addrVersion +: chainId +: hashChain(publicKey).take(20)
       val address = Base58.encode(unhashedAddress ++ hashChain(unhashedAddress).take(4))
       if (address.toUpperCase.indexOf(config.filter) > 0 || config.filter == "") {
         i+=1
