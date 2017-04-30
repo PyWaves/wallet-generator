@@ -48,7 +48,7 @@ Generate 100 mainnet addresses. Output to screen, wallet.dat (encrypted with 'my
 $ java -jar walletgenerator.jar -c 100 -p mypassword  
 ```
 
-Generate 100 addresses. Output to screen and append to existing wallet.dat (encrypted with 'mypassword') and addresses.csv
+Generate 100 addresses. Output to screen, append to existing wallet.dat (encrypted with 'mypassword') and addresses.csv
 ```
 $ java -jar walletgenerator.jar -a -c 100 -p mypassword  
 ```
