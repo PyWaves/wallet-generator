@@ -6,7 +6,6 @@ This tool generates Waves addresses with 15 word seeds compatible with Waves Lit
 
 ```
 $ java -jar walletgenerator.jar --help
-Error: Unknown option --help
 Waves wallet generator 1.1
 Usage: walletgenerator [options]
 
@@ -16,6 +15,7 @@ Usage: walletgenerator [options]
   -p, --password <value>  wallet password
   -f, --filter <value>    filter addresses with a specific pattern
   -s, --case-sensitive    case sensitive filtering
+  --help                  prints this help message
 ```	
 	
 ## Examples
