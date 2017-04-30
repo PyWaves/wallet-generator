@@ -44,15 +44,18 @@ address      : 3MuamA5LeQFarEmVYvSdcgzEMCPkeCQVDfP
 ```
 
 Generate 100 mainnet addresses. Output to screen, wallet.dat (encrypted with 'mypassword') and addresses.csv
-```$ java -jar walletgenerator.jar -c 100 -p mypassword  ```
+```
+$ java -jar walletgenerator.jar -c 100 -p mypassword  
+```
 
 Generate 100 addresses. Output to screen and append to existing wallet.dat (encrypted with 'mypassword') and addresses.csv
-```$ java -jar walletgenerator.jar -a -c 100 -p mypassword  ```
+```
+$ java -jar walletgenerator.jar -a -c 100 -p mypassword  
+```
 
-Generate 100000 mainnet addresses. Filter only addresses containing 'WAVE' (case insensitive)
-
-```$ java -jar walletgenerator.jar -c 100000 -f WAVES   
-
+Generate 100000 mainnet addresses, filter addresses containing the word 'WAVE' (case insensitive)
+```
+$ java -jar walletgenerator.jar -c 100000 -f WAVES   
 address #    : 1
 seed         : state upset better opera candy jelly shallow clutch jealous lunch laugh tomorrow perfect chuckle orphan salad ball filter
 public key   : 6MKTLcaWAVcSqgYAqCrX1WU3eBnHY8J1yFk8Kww6wzmt
@@ -74,8 +77,8 @@ address      : 3PPdLckWAveUmvHUsvsSJeRUxCJxqNGGpfQ
 ```
 
 Same as above but case sensitive
-```$ java -jar walletgenerator.jar -c 100000 -p mypassword -f WAVE -s  
-
+```
+$ java -jar walletgenerator.jar -c 100000 -p mypassword -f WAVE -s  
 address #    : 1
 seed         : legal ostrich sight enter guitar pen stock cattle dose tattoo define gossip author escape mass ten insane surround
 public key   : EE76QcW273AAhkQjHhXf4cE211byqACdEHLR2pU4KsJm
