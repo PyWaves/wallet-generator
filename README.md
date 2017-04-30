@@ -55,7 +55,7 @@ $ java -jar walletgenerator.jar -a -c 100 -p mypassword
 
 Generate 100000 mainnet addresses, filter addresses containing the word 'WAVE' (case insensitive)
 ```
-$ java -jar walletgenerator.jar -c 100000 -f WAVES   
+$ java -jar walletgenerator.jar -c 100000 -f WAVE   
 address #    : 1
 seed         : state upset better opera candy jelly shallow clutch jealous lunch laugh tomorrow perfect chuckle orphan salad ball filter
 public key   : 6MKTLcaWAVcSqgYAqCrX1WU3eBnHY8J1yFk8Kww6wzmt
