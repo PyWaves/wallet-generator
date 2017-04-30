@@ -21,8 +21,8 @@ Usage: walletgenerator [options]
 ## Examples
 
 Generate 3 testnet addresses. Output to screen, wallet.dat and addresses.csv
-```$ java -jar walletgenerator.jar -t -c 3
-
+```
+$ java -jar walletgenerator.jar -t -c 3
 address #    : 1
 seed         : pull assist echo fiscal learn lens feature boil frog banner term enter capable speed tone buddy mobile notable
 public key   : 4U6LakyXD21Pz6JjmDys6gEBPihqT1qS4XVZefZ2H6Nq
