@@ -7,20 +7,28 @@ import scorex.crypto.encode.Base58
 import scopt.OptionParser
 import org.h2.mvstore.{MVMap, MVStore}
 
-case class Config(count: Int = 1, testnet: Boolean = false, password:String = "", filter:String = "")
+case class Config(append: Boolean = false, count: Int = 1, testnet: Boolean = false, password: String = "", filter: String = "", sensitive: Boolean = false)
 
 object WalletGenerator extends App {
 
+  val AddressesCSVFileName = "addresses.csv"
+  val WalletFileName = "wallet.dat"
+
   val parser = new OptionParser[Config]("walletgenerator") {
-    head("Waves wallet generator", "1.0")
+    head("Waves wallet generator", "1.1")
+    opt[Unit]('a', "append").action((_, c) =>
+      c.copy(append = true)).text("append to existing wallet.dat / addresses.csv")
     opt[Int]('c', "count").action((x, c) =>
       c.copy(count = x)).text("number of addresses to generate")
-    opt[Unit]("testnet").action((_, c) =>
+    opt[Unit]('t', "testnet").action((_, c) =>
       c.copy(testnet = true)).text("generate testnet addresses")
     opt[String]('p', "password").action((x, c) =>
       c.copy(password = x)).text("wallet password")
     opt[String]('f', "filter").action((x, c) =>
       c.copy(filter = x)).text("filter addresses with a specific pattern")
+    opt[Unit]('s', "case-sensitive").action((_, c) =>
+      c.copy(sensitive = true)).text("case sensitive filtering")
+    help("help") text("prints this help message")
   }
   private def generatePhrase = {
     val wordList: List[String] = List("abandon", "ability", "able", "about", "above", "absent", "absorb", "abstract", "absurd", "abuse", "access",
@@ -230,29 +238,19 @@ object WalletGenerator extends App {
 
   private def hashChain(noncedSecret: Array[Byte]): Array[Byte] = Keccak256.hash(Blake2b256.hash(noncedSecret))
 
-  def createWallet(fileName: String, password: String): MVStore = {
-        Option(fileName).filter(_.trim.nonEmpty) match {
-          case Some(s) =>
-            val file = new File(s)
-            file.getParentFile.mkdirs().ensuring(file.getParentFile.exists())
-            new MVStore.Builder().fileName(s).encryptionKey(password.toCharArray).compress().open()
-          case None =>
-            new MVStore.Builder().open()
-        }
-      }
-
   parser.parse(args, Config()) map { config =>
 
     val addrVersion:Byte = 1
     val chainId:Byte = if(config.testnet) 'T' else 'W'
 
-    val db: MVStore = createWallet("./wallet.dat", config.password)
+    if (!config.append) new File(WalletFileName).delete()
+    val db: MVStore = new MVStore.Builder().fileName(WalletFileName).encryptionKey(config.password.toCharArray).compress().open()
 
     val pkeyMap: MVMap[Int, Array[Byte]] = db.openMap("privkeys")
     val seedMap: MVMap[String, Array[Byte]] = db.openMap("seed")
     val nonceMap: MVMap[String, Int] = db.openMap("nonce")
 
-    val csv = new FileWriter("addresses.csv", true)
+    val csv = new FileWriter(AddressesCSVFileName, config.append)
 
     for(n<-1 to config.count) {
       val seed = generatePhrase
@@ -260,7 +258,8 @@ object WalletGenerator extends App {
       val (privateKey, publicKey) = Curve25519.createKeyPair(accountSeedHash)
       val unhashedAddress = addrVersion +: chainId +: hashChain(publicKey).take(20)
       val address = Base58.encode(unhashedAddress ++ hashChain(unhashedAddress).take(4))
-      if (address.toUpperCase.indexOf(config.filter) > 0 || config.filter == "") {
+      if ((address.toUpperCase.indexOf(config.filter) > 0 && !config.sensitive) ||
+          (address.indexOf(config.filter) > 0 && config.sensitive) || config.filter == "") {
         val lastKey = pkeyMap.lastKey()
         if (lastKey == 0) seedMap.put("seed", Base58.encode(seed.getBytes).getBytes)
         nonceMap.put("nonce", lastKey + 1)
